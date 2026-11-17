@@ -1,0 +1,532 @@
+++ root@Note-Mateus:46: mktemp
++ root@Note-Mateus:46: original=/tmp/tmp.qd8swEVcE0
++ root@Note-Mateus:47: cp site/index.html /tmp/tmp.qd8swEVcE0
++ root@Note-Mateus:48: trap 'cp "$original" site/index.html; rm -f "$original"' EXIT
++ root@Note-Mateus:49: python3 -
++ root@Note-Mateus:56: docker version
+Client:
+ Version:           29.1.3
+ API version:       1.52
+ Go version:        go1.24.13
+ Git commit:        29.1.3-0ubuntu4.1
+ Built:             Wed Apr 29 16:40:20 2026
+ OS/Arch:           linux/amd64
+ Context:           default
+
+Server:
+ Engine:
+  Version:          29.1.3
+  API version:      1.52 (minimum version 1.44)
+  Go version:       go1.24.13
+  Git commit:       29.1.3-0ubuntu4.1
+  Built:            Wed Apr 29 16:40:20 2026
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          2.2.2
+  GitCommit:        
+ runc:
+  Version:          1.4.0-0ubuntu1
+  GitCommit:        
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        
++ root@Note-Mateus:57: true
+++ root@Note-Mateus:58: docker inspect web-bind --format '{{.State.Running}}'
++ root@Note-Mateus:58: [[ false != true ]]
++ root@Note-Mateus:59: docker start web-bind
+web-bind
++ root@Note-Mateus:64: espera http://localhost:8080
++ root@Note-Mateus:38: for tentativa in {1..30}
++ root@Note-Mateus:39: curl -fsS http://localhost:8080 -o /dev/null
+curl: (56) Recv failure: Conexão fechada pela outra ponta
++ root@Note-Mateus:40: sleep 1
++ root@Note-Mateus:38: for tentativa in {1..30}
++ root@Note-Mateus:39: curl -fsS http://localhost:8080 -o /dev/null
++ root@Note-Mateus:39: return 0
++ root@Note-Mateus:65: curl -fsS http://localhost:8080/
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Servidor web com Docker | Redes de Computadores</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, system-ui, sans-serif;
+      color: #edf5ff;
+      background: #08111e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: radial-gradient(ellipse at 85% 15%, #12365b, transparent 55%),
+                  #08111e;
+    }
+
+    main {
+      width: min(100%, 960px);
+      padding: clamp(24px, 5vw, 56px);
+      border: 1px solid #294461;
+      border-radius: 28px;
+      background: #101d2e;
+      box-shadow: 0 24px 72px #0005;
+    }
+
+    header, .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .disciplina {
+      margin: 0;
+      color: #abc4df;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    #versao {
+      flex-shrink: 0;
+      margin: 0;
+      padding: 7px 13px;
+      border: 1px solid #346b64;
+      border-radius: 999px;
+      background: #143b3a;
+      color: #a4f1da;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .hero { margin: 42px 0 36px; }
+
+    h1 {
+      margin: 0;
+      max-width: 10ch;
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      line-height: 0.98;
+      letter-spacing: -0.065em;
+    }
+
+    h1 span { color: #7dcaff; }
+
+    .descricao {
+      max-width: 44ch;
+      margin: 20px 0 0;
+      color: #b8cbe0;
+      line-height: 1.65;
+    }
+
+    .container {
+      flex: 0 0 clamp(120px, 24vw, 225px);
+      aspect-ratio: 1.25;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12%;
+      padding: 6%;
+      border: 2px solid #5296cb;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #173f66, #102740);
+      box-shadow: 9px 9px 0 #0b1524, 9px 9px 0 1px #294461;
+    }
+
+    .container span {
+      border: 1px solid #519ee1;
+      border-radius: 5px;
+      background: linear-gradient(#67baff, #22578d);
+    }
+
+    dl {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 18px;
+      margin: 0 0 28px;
+      padding: 22px;
+      border: 1px solid #294461;
+      border-radius: 16px;
+      background: #0b1625;
+    }
+
+    dt {
+      margin-bottom: 6px;
+      color: #abc4df;
+      font-size: 0.82rem;
+    }
+
+    dd {
+      margin: 0;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+
+    a {
+      display: inline-block;
+      padding: 12px 17px;
+      border-radius: 10px;
+      background: #7dcaff;
+      color: #081426;
+      font-weight: 750;
+      text-decoration: none;
+    }
+
+    a:hover { background: #acdfff; }
+    a:focus-visible { outline: 3px solid white; outline-offset: 4px; }
+
+    @media (max-width: 640px) {
+      .container { display: none; }
+      dl { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="disciplina">Redes de Computadores 2</p>
+      <p id="versao">Versão 1</p>
+    </header>
+
+    <section class="hero" aria-labelledby="titulo">
+      <div>
+        <h1 id="titulo">Servidor web com <span>Docker</span></h1>
+        <p class="descricao">
+          Uma atividade prática com Nginx, bind mounts e persistência de logs.
+        </p>
+      </div>
+
+      <div class="container" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+    </section>
+
+    <dl>
+      <div>
+        <dt>Aluno</dt>
+        <dd>Mateus Afonso Miranda de Oliveira</dd>
+      </div>
+      <div>
+        <dt>Matrícula</dt>
+        <dd>20231003300546</dd>
+      </div>
+      <div>
+        <dt>Turma</dt>
+        <dd>CIC1001 A03</dd>
+      </div>
+    </dl>
+
+    <a href="/sobre.html">Sobre os volumes <span aria-hidden="true">→</span></a>
+  </main>
+</body>
+</html>+ root@Note-Mateus:66: curl -fsS http://localhost:8080/sobre.html
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Sobre os volumes</title>
+</head>
+<body>
+  <h1>O que é um volume?</h1>
+  <p>Um volume Docker é um espaço de armazenamento gerenciado pelo Docker.
+     Ele guarda dados fora da camada gravável do container, então os dados
+     podem continuar disponíveis quando o container é removido e recriado.</p>
+  <a href="/">Voltar ao início</a>
+</body>
+</html>
++ root@Note-Mateus:67: curl -fsS http://localhost:8080/
++ root@Note-Mateus:67: grep 'Versão 1'
+      <p id="versao">Versão 1</p>
+++ root@Note-Mateus:68: docker inspect web-bind --format '{{.State.StartedAt}}'
++ root@Note-Mateus:68: inicio=2026-11-17T17:46:35.298377675Z
++ root@Note-Mateus:69: pausa 'Abra localhost:8080 e salve parte1-01-pagina-antes.png em evidencias/.'
++ root@Note-Mateus:36: [[ -t 0 ]]
++ root@Note-Mateus:36: read -r -p 'Abra localhost:8080 e salve parte1-01-pagina-antes.png em evidencias/. Pressione Enter para continuar. '
+Abra localhost:8080 e salve parte1-01-pagina-antes.png em evidencias/. Pressione Enter para continuar. + root@Note-Mateus:70: cp /tmp/tmp.qd8swEVcE0 site/index.html
++ root@Note-Mateus:71: curl -fsS http://localhost:8080/
++ root@Note-Mateus:71: grep 'Versão 2'
+      <p id="versao">Versão 2</p>
+++ root@Note-Mateus:72: docker inspect web-bind --format '{{.State.StartedAt}}'
++ root@Note-Mateus:72: test 2026-11-17T17:46:35.298377675Z = 2026-11-17T17:46:35.298377675Z
++ root@Note-Mateus:73: pausa 'Recarregue a página e salve parte1-02-pagina-depois.png; visite também /sobre.html.'
++ root@Note-Mateus:36: [[ -t 0 ]]
++ root@Note-Mateus:36: read -r -p 'Recarregue a página e salve parte1-02-pagina-depois.png; visite também /sobre.html. Pressione Enter para continuar. '
+Recarregue a página e salve parte1-02-pagina-depois.png; visite também /sobre.html. Pressione Enter para continuar. ++ root@Note-Mateus:74: docker exec web-bind touch /usr/share/nginx/html/teste.txt
++ root@Note-Mateus:74: erro='touch: /usr/share/nginx/html/teste.txt: Read-only file system'
++ root@Note-Mateus:77: printf '%s\n' 'touch: /usr/share/nginx/html/teste.txt: Read-only file system'
+touch: /usr/share/nginx/html/teste.txt: Read-only file system
++ root@Note-Mateus:78: grep -qi 'Read-only file system'
++ root@Note-Mateus:79: docker inspect web-bind --format '{{json .Mounts}}'
+[{"Type":"bind","Source":"/home/mateus-afonso/atividade-docker-mateus/site","Destination":"/usr/share/nginx/html","Mode":"ro","RW":false,"Propagation":"rprivate"}]
++ root@Note-Mateus:80: pausa 'Capture o terminal identificado com o erro e os mounts (parte1-03-terminal.png).'
++ root@Note-Mateus:36: [[ -t 0 ]]
++ root@Note-Mateus:36: read -r -p 'Capture o terminal identificado com o erro e os mounts (parte1-03-terminal.png). Pressione Enter para continuar. '
+Capture o terminal identificado com o erro e os mounts (parte1-03-terminal.png). Pressione Enter para continuar. + root@Note-Mateus:82: docker build -t meu-web:1.0 .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  10.75kB
+Step 1/5 : FROM nginx:alpine
+ ---> fed7e14be83c
+Step 2/5 : LABEL autor="Mateus Afonso Miranda de Oliveira - 20231003300546"
+ ---> Running in d1fc14d56df5
+ ---> Removed intermediate container d1fc14d56df5
+ ---> f8d6e713818f
+Step 3/5 : COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+ ---> 7ee9e655a61b
+Step 4/5 : COPY site/ /usr/share/nginx/html/
+ ---> 8b5b054ce6cb
+Step 5/5 : EXPOSE 80
+ ---> Running in 0b4d77962d3a
+ ---> Removed intermediate container 0b4d77962d3a
+ ---> 8d8367122dc2
+Successfully built 8d8367122dc2
+Successfully tagged meu-web:1.0
++ root@Note-Mateus:83: docker images meu-web
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+IMAGE         ID             DISK USAGE   CONTENT SIZE   EXTRA
+meu-web:1.0   8d8367122dc2       93.7MB         26.4MB        
++ root@Note-Mateus:84: docker volume create logs-web
+logs-web
++ root@Note-Mateus:85: docker run -d --name web-vol -p 8081:80 -v logs-web:/var/log/nginx meu-web:1.0
+eef8ad215aeae08ac423b2689723030c7c707b3320d89c9c9092138dd4fc956c
++ root@Note-Mateus:86: espera http://localhost:8081/saude
++ root@Note-Mateus:38: for tentativa in {1..30}
++ root@Note-Mateus:39: curl -fsS http://localhost:8081/saude -o /dev/null
++ root@Note-Mateus:39: return 0
++ root@Note-Mateus:87: curl -fsS http://localhost:8081/
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Servidor web com Docker | Redes de Computadores</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, system-ui, sans-serif;
+      color: #edf5ff;
+      background: #08111e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: radial-gradient(ellipse at 85% 15%, #12365b, transparent 55%),
+                  #08111e;
+    }
+
+    main {
+      width: min(100%, 960px);
+      padding: clamp(24px, 5vw, 56px);
+      border: 1px solid #294461;
+      border-radius: 28px;
+      background: #101d2e;
+      box-shadow: 0 24px 72px #0005;
+    }
+
+    header, .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .disciplina {
+      margin: 0;
+      color: #abc4df;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    #versao {
+      flex-shrink: 0;
+      margin: 0;
+      padding: 7px 13px;
+      border: 1px solid #346b64;
+      border-radius: 999px;
+      background: #143b3a;
+      color: #a4f1da;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .hero { margin: 42px 0 36px; }
+
+    h1 {
+      margin: 0;
+      max-width: 10ch;
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      line-height: 0.98;
+      letter-spacing: -0.065em;
+    }
+
+    h1 span { color: #7dcaff; }
+
+    .descricao {
+      max-width: 44ch;
+      margin: 20px 0 0;
+      color: #b8cbe0;
+      line-height: 1.65;
+    }
+
+    .container {
+      flex: 0 0 clamp(120px, 24vw, 225px);
+      aspect-ratio: 1.25;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12%;
+      padding: 6%;
+      border: 2px solid #5296cb;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #173f66, #102740);
+      box-shadow: 9px 9px 0 #0b1524, 9px 9px 0 1px #294461;
+    }
+
+    .container span {
+      border: 1px solid #519ee1;
+      border-radius: 5px;
+      background: linear-gradient(#67baff, #22578d);
+    }
+
+    dl {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 18px;
+      margin: 0 0 28px;
+      padding: 22px;
+      border: 1px solid #294461;
+      border-radius: 16px;
+      background: #0b1625;
+    }
+
+    dt {
+      margin-bottom: 6px;
+      color: #abc4df;
+      font-size: 0.82rem;
+    }
+
+    dd {
+      margin: 0;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+
+    a {
+      display: inline-block;
+      padding: 12px 17px;
+      border-radius: 10px;
+      background: #7dcaff;
+      color: #081426;
+      font-weight: 750;
+      text-decoration: none;
+    }
+
+    a:hover { background: #acdfff; }
+    a:focus-visible { outline: 3px solid white; outline-offset: 4px; }
+
+    @media (max-width: 640px) {
+      .container { display: none; }
+      dl { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="disciplina">Redes de Computadores 2</p>
+      <p id="versao">Versão 2</p>
+    </header>
+
+    <section class="hero" aria-labelledby="titulo">
+      <div>
+        <h1 id="titulo">Servidor web com <span>Docker</span></h1>
+        <p class="descricao">
+          Uma atividade prática com Nginx, bind mounts e persistência de logs.
+        </p>
+      </div>
+
+      <div class="container" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+    </section>
+
+    <dl>
+      <div>
+        <dt>Aluno</dt>
+        <dd>Mateus Afonso Miranda de Oliveira</dd>
+      </div>
+      <div>
+        <dt>Matrícula</dt>
+        <dd>20231003300546</dd>
+      </div>
+      <div>
+        <dt>Turma</dt>
+        <dd>CIC1001 A03</dd>
+      </div>
+    </dl>
+
+    <a href="/sobre.html">Sobre os volumes <span aria-hidden="true">→</span></a>
+  </main>
+</body>
+</html>+ root@Note-Mateus:88: curl -fsS http://localhost:8081/sobre.html
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Sobre os volumes</title>
+</head>
+<body>
+  <h1>O que é um volume?</h1>
+  <p>Um volume Docker é um espaço de armazenamento gerenciado pelo Docker.
+     Ele guarda dados fora da camada gravável do container, então os dados
+     podem continuar disponíveis quando o container é removido e recriado.</p>
+  <a href="/">Voltar ao início</a>
+</body>
+</html>
++ root@Note-Mateus:89: curl -fsS http://localhost:8081/saude
++ root@Note-Mateus:89: grep -Fx 'ok - 20231003300546'
+ok - 20231003300546
+++ root@Note-Mateus:90: curl -sS -o /dev/null -w '%{http_code}' http://localhost:8081/inexistente
++ root@Note-Mateus:90: test 404 = 404
++ root@Note-Mateus:91: curl -fsS 'http://localhost:8081/saude?parte2=quinta'
+ok - 20231003300546
++ root@Note-Mateus:92: docker exec web-vol cat /var/log/nginx/acessos.log
+172.17.0.1 - - [17/Nov/2026:17:46:50 +0000] "GET /saude HTTP/1.1" 200 20 "-" "curl/8.18.0"
+172.17.0.1 - - [17/Nov/2026:17:46:50 +0000] "GET / HTTP/1.1" 200 4017 "-" "curl/8.18.0"
+172.17.0.1 - - [17/Nov/2026:17:46:50 +0000] "GET /sobre.html HTTP/1.1" 200 435 "-" "curl/8.18.0"
+172.17.0.1 - - [17/Nov/2026:17:46:50 +0000] "GET /saude HTTP/1.1" 200 20 "-" "curl/8.18.0"
+172.17.0.1 - - [17/Nov/2026:17:46:50 +0000] "GET /inexistente HTTP/1.1" 404 153 "-" "curl/8.18.0"
+172.17.0.1 - - [17/Nov/2026:17:46:50 +0000] "GET /saude?parte2=quinta HTTP/1.1" 200 20 "-" "curl/8.18.0"
++ root@Note-Mateus:93: docker volume inspect logs-web
+[
+    {
+        "CreatedAt": "2026-11-17T14:46:50-03:00",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/logs-web/_data",
+        "Name": "logs-web",
+        "Options": null,
+        "Scope": "local"
+    }
+]
++ root@Note-Mateus:94: docker volume inspect logs-web --format '{{.Mountpoint}}'
++ root@Note-Mateus:95: pausa 'Capture build, imagem, saude, log e volume inspect (prints parte2-*).'
++ root@Note-Mateus:36: [[ -t 0 ]]
++ root@Note-Mateus:36: read -r -p 'Capture build, imagem, saude, log e volume inspect (prints parte2-*). Pressione Enter para continuar. '
+Capture build, imagem, saude, log e volume inspect (prints parte2-*). Pressione Enter para continuar. 
